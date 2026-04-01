@@ -1,131 +1,219 @@
-You are absolutely right. If a recruiter is reviewing dozens of applications today, we want yours to be the most foolproof, explicitly clear, and easy-to-read document they open. 
 
-Since you used XAMPP for your local database, I have completely rewritten the Local Setup section to specifically walk them through using XAMPP. I have also simplified the language so it is incredibly easy to scan. 
+# Task Management System API
+Cytonn Software Engineering Internship Challenge 2026
 
-Here is your final, 100% copy-and-paste ready `README.md`. Just remember to swap out the `[INSERT_YOUR_GITHUB_LINK_HERE]` placeholder at the top!
+## Overview
 
-***
+This project is a Task Management System built using PHP Laravel (backend), Vue.js (frontend), and MySQL (database).
 
-```markdown
-# Cytonn Software Engineering Internship - TaskMaster API
+The system implements all required features and strictly enforces the provided business rules.
 
-A full-stack Task Management platform built for the 2026 Cytonn Software Engineering Internship Challenge. This application strictly enforces all provided business rules using a Laravel 11 backend API and a responsive Vue.js 3 (Composition API) frontend.
-
-### 🚀 Quick Links
-* **Live Demo:** https://taskmaster-production-d24.up.railway.app/
-* **GitHub Repository:** https://github.com/Ken-Mwirigi/TaskMaster.git
+* Live version of the application: https://taskmaster-production-d24.up.railway.app/
+* Source code: https://github.com/Ken-Mwirigi/TaskMaster
 
 ---
 
-## 🛠 Tech Stack
-* **Backend:** PHP / Laravel 11
-* **Frontend:** JavaScript / Vue.js 3 / Tailwind CSS
-* **Database:** MySQL
-* **Hosting:** Railway.app
+## Features
+
+1. Create tasks with strict validation rules.
+2. List tasks with automated sorting and status filtering.
+3. Update task status with strict progression rules.
+4. Delete tasks (restricted only to completed tasks).
+5. Generate daily task reports (Bonus Feature).
 
 ---
 
-## 📦 What is Included in this Zip File?
-1. The complete **source code** for the application.
-2. The **MySQL Dump File** (`task_manager.sql`) as requested in the instructions.
-3. This **README** documentation.
+## Technology Stack
+
+* Backend: Laravel 11 (PHP 8.2)
+* Frontend: Vue.js 3
+* Database: MySQL
+* Local Environment: XAMPP
+* Deployment: Railway
 
 ---
 
-## ✨ Features & Business Rules Achieved
+## Database Structure
 
-1. **Task Creation:** Validates priority (`low`, `medium`, `high`) and ensures the `due_date` is today or in the future. Prevents duplicate task titles on the exact same date.
-2. **Task Listing:** Automatically sorts tasks by Priority (High → Medium → Low), and then by Due Date (Ascending). Includes a `?status=` filter.
-3. **Strict Status Updates:** Enforces a strict, one-way progression (`pending` → `in_progress` → `done`). Attempting to skip or reverse a status returns a `422 Unprocessable Entity` error.
-4. **Protected Deletion:** Only tasks marked as `done` can be deleted. Attempting to delete an active task returns a `403 Forbidden` error.
-5. **Bonus Feature (Daily Report):** A custom endpoint that returns the total count of tasks grouped by their priority and status for any specific date.
+Table: tasks
+* id (integer, primary key)
+* title (string)
+* due_date (date)
+* priority (enum: low, medium, high)
+* status (enum: pending, in_progress, done)
+* created_at (timestamp)
+* updated_at (timestamp)
 
 ---
 
-## 💻 Local Setup Instructions (Using XAMPP)
+## Business Rules Implemented
 
-Follow these exact steps to run this project locally on your machine.
+Create Task:
+* Title must not duplicate another task with the same due_date.
+* Priority must be one of: low, medium, high.
+* Due date must be today or a future date.
 
-### Prerequisites
-Make sure you have the following installed:
-* **XAMPP** (For MySQL)
-* **PHP >= 8.2**
-* **Composer**
-* **Node.js & NPM**
+List Tasks:
+* Sorted by priority (high to low).
+* Then sorted by due_date (ascending).
+* Supports filtering by status.
+* Returns a clear message if no tasks exist.
 
-### Step 1: Database Setup via XAMPP
-1. Open the **XAMPP Control Panel**.
-2. Start the **MySQL** module.
-3. Open your browser and go to `http://localhost/phpmyadmin`.
-4. Create a brand new, empty database and name it: `task_manager`
-5. *(Optional)* You can either import the provided `task_manager.sql` dump file here, OR use the Laravel migrations in Step 4.
+Update Task Status:
+* Allowed transitions: pending -> in_progress -> done.
+* Cannot skip or revert status.
 
-### Step 2: Extract & Install Dependencies
-1. Extract this project folder and open it in your terminal/command prompt.
-2. Install the PHP backend dependencies:
-   ```bash
-   composer install
-   ```
-3. Install the JavaScript frontend dependencies:
-   ```bash
-   npm install
-   ```
+Delete Task:
+* Only tasks with status "done" can be deleted.
+* Otherwise returns 403 Forbidden.
 
-### Step 3: Environment Setup
-1. Duplicate the `.env.example` file and rename the copy to `.env`.
-2. Generate the application key:
-   ```bash
-   php artisan key:generate
-   ```
-3. Open the `.env` file and ensure your database credentials match XAMPP's defaults:
-   ```env
-   DB_CONNECTION=mysql
-   DB_HOST=127.0.0.1
-   DB_PORT=3306
-   DB_DATABASE=task_manager
-   DB_USERNAME=root
-   DB_PASSWORD=
-   ```
+Daily Report:
+* Returns counts grouped by priority and status for a given date.
 
-### Step 4: Run Migrations & Seed Data
-*(If you did not import the SQL dump file manually, run this command to build the tables and insert test data):*
+---
+
+## Local Setup Instructions (XAMPP)
+
+### Requirements
+* XAMPP (MySQL)
+* PHP 8.2 or higher
+* Composer
+* Node.js and npm
+
+### Step 1: Setup Database
+1. Open XAMPP Control Panel.
+2. Start MySQL.
+3. Open phpMyAdmin (http://localhost/phpmyadmin).
+4. Create a database named: `task_manager_db`
+
+### Step 2: Install Project Dependencies
+Open your terminal in the project folder and run:
 ```bash
-php artisan migrate --seed
+composer install
+npm install
 ```
 
-### Step 5: Start the Application
-To run both the backend and frontend, you need to run these two commands. 
+### Step 3: Configure Environment
+Copy the environment file:
+```bash
+cp .env.example .env
+```
+Generate the app key:
+```bash
+php artisan key:generate
+```
+Edit your `.env` file to match your XAMPP database credentials:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=task_manager_db
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-1. Build the Vue.js frontend files:
-   ```bash
-   npm run build
-   ```
-2. Start the Laravel backend server:
-   ```bash
-   php artisan serve
-   ```
-3. Open your browser and visit: `http://localhost:8000`
+### Step 4: Run Migrations
+Run the migrations to build the tables:
+```bash
+php artisan migrate
+```
+*(Optional: If you prefer using the dump file, you can import `task_manager_db.sql` directly into phpMyAdmin instead).*
+
+### Step 5: Start Application
+Build the frontend assets:
+```bash
+npm run build
+```
+Start the backend server:
+```bash
+php artisan serve
+```
+Open your browser and navigate to: http://localhost:8000
 
 ---
 
-## 📡 API Documentation & Endpoints
+## API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/api/tasks` | Create a new task. |
-| `GET`  | `/api/tasks` | List all tasks (Supports `?status=pending` filtering). |
-| `PATCH`| `/api/tasks/{id}/status` | Progress a task's status forward. |
-| `DELETE`| `/api/tasks/{id}` | Delete a task (Only if status is 'done'). |
-| `GET`  | `/api/tasks/report?date=YYYY-MM-DD` | Get the Bonus Daily Analytics Report. |
+* POST /api/tasks (Create a task)
+* GET /api/tasks (List all tasks. Optional: ?status=pending)
+* PATCH /api/tasks/{id}/status (Update task status)
+* DELETE /api/tasks/{id} (Delete task, only if done)
+* GET /api/tasks/report?date=YYYY-MM-DD (Get daily report)
 
-**Example POST Request (Create Task):**
+---
+
+## Example Requests
+
+Create Task (POST /api/tasks)
 ```json
 {
-  "title": "Evaluate application",
-  "due_date": "2026-04-05",
+  "title": "Finish assignment",
+  "due_date": "2026-04-02",
   "priority": "high"
 }
 ```
+
+Update Status (PATCH /api/tasks/1/status)
+```json
+{
+  "status": "in_progress"
+}
 ```
 
-***
+---
+
+## Testing Instructions
+
+Important: Always include this header in your API requests:
+`Accept: application/json`
+
+### Automated Tests
+To run the automated test suite, execute the following command in your terminal:
+```bash
+php artisan test
+```
+### Manual Tests
+Test the following cases to verify business logic:
+1. Create task with valid data -> should succeed.
+2. Create duplicate title with same date -> should fail (422).
+3. Create task with past date -> should fail.
+4. Create task with invalid priority -> should fail.
+5. List tasks -> should return sorted results.
+6. Filter tasks by status -> should return correct results.
+7. Update status correctly -> should succeed.
+8. Skip status (pending -> done) -> should fail.
+9. Delete non-done task -> should return 403.
+10. Delete done task -> should succeed.
+11. Get report -> should return correct summary.
+
+---
+
+## Deployment Instructions
+
+This project is deployed on Railway using a provisioned MySQL database.
+
+Steps taken for deployment:
+1. Create a Railway project.
+2. Add a MySQL database instance.
+3. Connect the GitHub repository.
+4. Set the environment variables in the Railway Variables tab.
+5. Run the deployment and execute migrations via the Custom console:
+   `php artisan migrate --force`
+
+---
+
+## Submission Details
+
+* Full project source code included.
+* MySQL dump file (`task_manager_db.sql`) included in the root directory.
+* README included with setup and testing instructions.
+* Application hosted online.
+
+Submission email: support@cytonn.com
+Subject: Software Engineering Internship - Coding Challenge 2026
+
+---
+
+## Author
+Kennedy Kamau
+```

@@ -1,4 +1,3 @@
-
 # Task Management System API
 Cytonn Software Engineering Internship Challenge 2026
 
@@ -85,7 +84,6 @@ Daily Report:
 2. Start MySQL.
 3. Open phpMyAdmin (http://localhost/phpmyadmin).
 4. Create a database named: `task_manager_db`
-
 ### Step 2: Install Project Dependencies
 Open your terminal in the project folder and run:
 ```bash
@@ -120,10 +118,14 @@ php artisan migrate
 *(Optional: If you prefer using the dump file, you can import `task_manager_db.sql` directly into phpMyAdmin instead).*
 
 ### Step 5: Start Application
+
 Build the frontend assets:
 ```bash
 npm run build
 ```
+
+**IMPORTANT: You MUST have XAMPP running before proceeding.**
+
 Start the backend server:
 ```bash
 php artisan serve

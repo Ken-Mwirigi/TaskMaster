@@ -204,17 +204,7 @@ Steps taken for deployment:
 
 ---
 
-## Submission Details
 
-* Full project source code included.
-* MySQL dump file (`task_manager_db.sql`) included in the root directory.
-* README included with setup and testing instructions.
-* Application hosted online.
-
-Submission email: support@cytonn.com
-Subject: Software Engineering Internship - Coding Challenge 2026
-
----
 
 ## Author
 Kennedy Kamau
